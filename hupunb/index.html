@@ -1,0 +1,980 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>虎扑nba-篮球社区热帖_比赛战报与球员评分</title>
+  <meta name="description" content="虎扑nba是篮球迷聚集的社区资讯站，提供比赛战报、球员评分、热帖讨论、球队动态和实战数据。在这里可以浏览每日NBA热点、参与赛后评分、查看JRs的犀利评论，适合想快速了解比赛看点与球迷观点的篮球爱好者收藏。">
+  <meta name="keywords" content="虎扑nba,篮球社区,比赛战报,球员评分,JRs热帖">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23c8102e'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='Arial'%3EJR%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      --hupu-red: #c8102e;
+      --hupu-dark: #1a1e24;
+      --hupu-gray: #6b7280;
+      --hupu-light: #f9fafb;
+      --hupu-border: #e5e7eb;
+      --hupu-card: #ffffff;
+      --hupu-accent: #f59e0b;
+      --hupu-blue: #2563eb;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 2px 10px rgba(0,0,0,0.04);
+      --shadow-hover: 0 10px 24px rgba(0,0,0,0.08);
+      --max-width: 1200px;
+      --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-sans);
+      background-color: #f3f4f6;
+      color: #1f2937;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    /* 导航 */
+    .hp-nav {
+      background: var(--hupu-dark);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    }
+    .hp-nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 62px;
+    }
+    .hp-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
+    .hp-logo-icon {
+      background: var(--hupu-red);
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 900;
+      color: white;
+      transform: rotate(-3deg);
+    }
+    .hp-nav-links {
+      display: flex;
+      gap: 22px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #d1d5db;
+    }
+    .hp-nav-links a {
+      padding: 6px 0;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .hp-nav-links a:hover {
+      color: #fff;
+      border-bottom-color: var(--hupu-red);
+    }
+    .hp-nav-right {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .hp-btn-outline {
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .hp-btn-outline:hover { background: rgba(255,255,255,0.1); }
+    .hp-btn-primary {
+      background: var(--hupu-red);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: opacity 0.2s;
+    }
+    .hp-btn-primary:hover { opacity: 0.9; }
+
+    /* banner */
+    .hp-banner {
+      background: linear-gradient(135deg, #0b1219 0%, #1f2a37 100%);
+      color: #fff;
+      padding: 46px 0 40px;
+      border-bottom: 4px solid var(--hupu-red);
+    }
+    .hp-banner-grid {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    .hp-banner-content { flex: 1.2; }
+    .hp-banner h1 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .hp-banner h1 span { color: var(--hupu-red); }
+    .hp-banner-desc {
+      font-size: 17px;
+      color: #d1d5db;
+      max-width: 600px;
+      margin-bottom: 24px;
+    }
+    .hp-search-box {
+      display: flex;
+      background: #fff;
+      border-radius: 40px;
+      padding: 4px 4px 4px 20px;
+      max-width: 500px;
+      margin-bottom: 24px;
+    }
+    .hp-search-box input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      background: transparent;
+    }
+    .hp-search-box button {
+      background: var(--hupu-red);
+      border: none;
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .hp-banner-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .hp-banner-tags a {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 7px 16px;
+      border-radius: 30px;
+      font-size: 14px;
+      color: #e5e7eb;
+      transition: background 0.2s;
+    }
+    .hp-banner-tags a:hover { background: rgba(255,255,255,0.2); }
+    .hp-banner-stats {
+      flex: 0.8;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .hp-stat-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      backdrop-filter: blur(4px);
+    }
+    .hp-stat-card strong {
+      display: block;
+      font-size: 26px;
+      font-weight: 800;
+    }
+    .hp-stat-card span {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-top: 4px;
+      display: block;
+    }
+
+    /* 通用板块 */
+    .hp-section {
+      padding: 44px 0 10px;
+    }
+    .hp-section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .hp-section-head h2 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+    .hp-section-head h2 i {
+      font-style: normal;
+      color: var(--hupu-red);
+      margin-right: 6px;
+    }
+    .hp-more-link {
+      font-size: 14px;
+      color: var(--hupu-gray);
+      font-weight: 500;
+    }
+    .hp-more-link:hover { color: var(--hupu-red); }
+
+    /* 卡片网格 */
+    .hp-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .hp-card {
+      background: var(--hupu-card);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid var(--hupu-border);
+      display: flex;
+      flex-direction: column;
+    }
+    .hp-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+    .hp-card-tag {
+      display: inline-block;
+      background: #fee2e2;
+      color: var(--hupu-red);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 30px;
+      margin-bottom: 10px;
+      align-self: flex-start;
+    }
+    .hp-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .hp-card p {
+      font-size: 14px;
+      color: var(--hupu-gray);
+      line-height: 1.55;
+      flex: 1;
+    }
+    .hp-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      font-size: 12px;
+      color: #9ca3af;
+      border-top: 1px solid var(--hupu-border);
+      padding-top: 12px;
+    }
+    .hp-card-meta span:first-child { color: var(--hupu-accent); font-weight: 600; }
+
+    /* 最新动态列表 */
+    .hp-update-list {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 6px 0;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--hupu-border);
+    }
+    .hp-update-item {
+      display: flex;
+      align-items: center;
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--hupu-border);
+      gap: 16px;
+    }
+    .hp-update-item:last-child { border-bottom: none; }
+    .hp-update-time {
+      font-size: 13px;
+      color: #9ca3af;
+      min-width: 80px;
+      font-weight: 500;
+    }
+    .hp-update-content {
+      flex: 1;
+      font-size: 15px;
+    }
+    .hp-update-content strong { color: var(--hupu-red); font-weight: 600; }
+    .hp-update-badge {
+      background: #f3f4f6;
+      padding: 3px 12px;
+      border-radius: 30px;
+      font-size: 12px;
+      color: var(--hupu-gray);
+      white-space: nowrap;
+    }
+
+    /* 分类入口 */
+    .hp-cat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .hp-cat-item {
+      background: #fff;
+      border: 1px solid var(--hupu-border);
+      border-radius: var(--radius-sm);
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-weight: 500;
+    }
+    .hp-cat-item:hover {
+      border-color: var(--hupu-red);
+      box-shadow: 0 4px 12px rgba(200,16,46,0.08);
+    }
+    .hp-cat-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #fef2f2;
+      color: var(--hupu-red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    /* 深度解析 */
+    .hp-article-box {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 36px 40px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--hupu-border);
+    }
+    .hp-article-box h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--hupu-red);
+      display: inline-block;
+    }
+    .hp-article-box p {
+      font-size: 15.5px;
+      color: #374151;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    /* FAQ */
+    .hp-faq-list {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 10px 30px;
+      border: 1px solid var(--hupu-border);
+      box-shadow: var(--shadow-sm);
+    }
+    .hp-faq-item {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--hupu-border);
+    }
+    .hp-faq-item:last-child { border-bottom: none; }
+    .hp-faq-q {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: var(--hupu-dark);
+      display: flex;
+      gap: 10px;
+    }
+    .hp-faq-q::before {
+      content: "Q";
+      color: var(--hupu-red);
+      font-weight: 900;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+    .hp-faq-a {
+      font-size: 14.5px;
+      color: #4b5563;
+      line-height: 1.7;
+      padding-left: 28px;
+    }
+
+    /* 评论 */
+    .hp-comment-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .hp-comment-item {
+      background: #fff;
+      padding: 16px 20px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--hupu-border);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+    }
+    .hp-comment-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    .hp-comment-name { font-weight: 700; color: var(--hupu-dark); }
+    .hp-comment-date { color: #9ca3af; }
+    .hp-comment-text {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.55;
+    }
+
+    /* 资讯 */
+    .hp-news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .hp-news-card {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 22px;
+      border: 1px solid var(--hupu-border);
+      transition: box-shadow 0.2s;
+    }
+    .hp-news-card:hover { box-shadow: var(--shadow-hover); }
+    .hp-news-date {
+      font-size: 12px;
+      color: var(--hupu-gray);
+      margin-bottom: 6px;
+    }
+    .hp-news-card h4 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .hp-news-card p {
+      font-size: 14px;
+      color: var(--hupu-gray);
+      line-height: 1.55;
+    }
+
+    /* 页脚 */
+    .hp-footer {
+      background: var(--hupu-dark);
+      color: #9ca3af;
+      margin-top: 50px;
+      padding: 44px 0 28px;
+      font-size: 14px;
+    }
+    .hp-footer-inner {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+    .hp-footer-brand { max-width: 280px; }
+    .hp-footer-brand .hp-logo { margin-bottom: 12px; }
+    .hp-footer-brand p { font-size: 13px; line-height: 1.7; color: #6b7280; }
+    .hp-footer-links {
+      display: flex;
+      gap: 50px;
+    }
+    .hp-footer-links div { display: flex; flex-direction: column; gap: 8px; }
+    .hp-footer-links strong { color: #e5e7eb; font-size: 14px; margin-bottom: 4px; }
+    .hp-footer-links a { color: #9ca3af; font-size: 13px; }
+    .hp-footer-links a:hover { color: #fff; }
+    .hp-footer-bottom {
+      border-top: 1px solid #2d333b;
+      margin-top: 32px;
+      padding-top: 20px;
+      font-size: 12px;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .hp-banner-grid { flex-direction: column; }
+      .hp-banner h1 { font-size: 2rem; }
+      .hp-card-grid { grid-template-columns: 1fr 1fr; }
+      .hp-cat-grid { grid-template-columns: 1fr 1fr; }
+      .hp-comment-grid { grid-template-columns: 1fr; }
+      .hp-news-grid { grid-template-columns: 1fr 1fr; }
+      .hp-nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .hp-card-grid { grid-template-columns: 1fr; }
+      .hp-news-grid { grid-template-columns: 1fr; }
+      .hp-cat-grid { grid-template-columns: 1fr 1fr; }
+      .hp-banner h1 { font-size: 1.8rem; }
+      .hp-article-box { padding: 24px 18px; }
+      .hp-banner-stats { grid-template-columns: 1fr 1fr; }
+      .hp-footer-links { flex-direction: column; gap: 20px; }
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<!-- 导航 -->
+<header class="hp-nav">
+  <div class="container hp-nav-inner">
+    <a href="/" class="hp-logo">
+      <span class="hp-logo-icon">JR</span>
+      <span>虎扑<span style="color:#c8102e;">NBA</span></span>
+    </a>
+    <nav class="hp-nav-links">
+      <a href="/#hot">热门推荐</a>
+      <a href="/#latest">最新战报</a>
+      <a href="/#depth">深度解析</a>
+      <a href="/#categories">分类入口</a>
+      <a href="/#faq">常见问题</a>
+      <a href="/#comments">JRs评论</a>
+      <a href="/#news">资讯流</a>
+    </nav>
+    <div class="hp-nav-right">
+      <a href="/#subscribe" class="hp-btn-outline">订阅</a>
+      <a href="/#post" class="hp-btn-primary">发帖</a>
+    </div>
+  </div>
+</header>
+
+<!-- Banner -->
+<section class="hp-banner" id="home">
+  <div class="container hp-banner-grid">
+    <div class="hp-banner-content">
+      <h1>虎扑NBA · 篮球迷的<span>社区资讯站</span></h1>
+      <p class="hp-banner-desc">
+        每天更新比赛战报、球员评分和JRs犀利热帖。从赛前前瞻到赛后复盘，从数据面板到球迷观点，一站式看懂NBA。
+      </p>
+      <div class="hp-search-box">
+        <input type="text" placeholder="搜索球队、球员或热帖关键词...">
+        <button>搜索</button>
+      </div>
+      <div class="hp-banner-tags">
+        <a href="/#hot">湖人</a>
+        <a href="/#hot">勇士</a>
+        <a href="/#hot">凯尔特人</a>
+        <a href="/#hot">球员评分</a>
+        <a href="/#latest">今日战报</a>
+        <a href="/#depth">战术解析</a>
+        <a href="/#comments">JRs热议</a>
+        <a href="/#news">交易流言</a>
+      </div>
+    </div>
+    <div class="hp-banner-stats">
+      <div class="hp-stat-card"><strong>2.4w+</strong><span>今日热帖讨论</span></div>
+      <div class="hp-stat-card"><strong>89</strong><span>场赛后评分</span></div>
+      <div class="hp-stat-card"><strong>48</strong><span>支球队动态</span></div>
+      <div class="hp-stat-card"><strong>12</strong><span>深度专栏更新</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 内容简介 -->
+<section class="hp-section" id="intro">
+  <div class="container">
+    <div class="hp-section-head">
+      <h2><i>｜</i>关于虎扑NBA</h2>
+      <a href="/#depth" class="hp-more-link">了解社区 ›</a>
+    </div>
+    <div class="hp-article-box">
+      <h3>篮球迷的日常聚集地</h3>
+      <p>虎扑NBA是篮球爱好者浏览比赛资讯、参与赛后讨论、查看球员评分的重要入口。在这里，你不需要花时间翻遍多个平台：每日战报整合了比分、关键数据和比赛进程；JRs热帖区汇集了球迷对战术、球员表现和球队运营的真实观点；球员评分则用直观的数值呈现球迷对每位球员当晚发挥的评价。</p>
+      <p>页面适合三类受众：想快速了解比赛结果的上班族、喜欢深挖战术和数据的硬核球迷、以及享受社区讨论氛围的JRs。无论你是支持湖人、勇士、凯尔特人还是掘金，都能通过分类入口和热门标签快速定位到感兴趣的内容。虎扑NBA不仅提供信息，更保留了社区讨论的现场感，让浏览比赛资讯这件事变得更有参与感。</p>
+      <p>如果你正在寻找一个能同时看到战报、数据、评论和资讯的篮球内容站，虎扑NBA的专题页会是一个值得收藏的选择。我们按比赛日节奏更新内容，重点场次会补充战术板解析和球员对位分析，帮助你在刷手机的同时也能看懂门道。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 热门推荐 -->
+<section class="hp-section" id="hot">
+  <div class="container">
+    <div class="hp-section-head">
+      <h2><i>｜</i>热门内容推荐</h2>
+      <a href="/#latest" class="hp-more-link">更多热门 ›</a>
+    </div>
+    <div class="hp-card-grid">
+      <div class="hp-card">
+        <span class="hp-card-tag">赛后热帖</span>
+        <h3>湖人加时险胜勇士，JRs评分两极分化</h3>
+        <p>最后两分钟三次关键判罚引发热议，球员评分区吵成一片，防守效率数据成焦点。</p>
+        <div class="hp-card-meta"><span>🔥 8.9万热度</span><span>12分钟前</span></div>
+      </div>
+      <div class="hp-card">
+        <span class="hp-card-tag">球员评分</span>
+        <h3>约基奇三双带队逆转，评分9.8全场最高</h3>
+        <p>末节独得14分+6篮板，虎扑NBA评分区一边倒给出五星，球迷称“基本操作”。</p>
+        <div class="hp-card-meta"><span>🔥 6.7万热度</span><span>35分钟前</span></div>
+      </div>
+      <div class="hp-card">
+        <span class="hp-card-tag">战术解析</span>
+        <h3>凯尔特人五外阵容为何难破？拆解三个回合</h3>
+        <p>用三个典型回合图解绿军空间拉扯，JRs在评论区补充了防守轮转的细节。</p>
+        <div class="hp-card-meta"><span>🔥 4.2万热度</span><span>1小时前</span></div>
+      </div>
+      <div class="hp-card">
+        <span class="hp-card-tag">交易流言</span>
+        <h3>东部某队询价全明星后卫，虎扑NBA热议下家</h3>
+        <p>消息源未透露具体球队，JRs根据薪资空间和选秀权开始“破案”，评论区很热闹。</p>
+        <div class="hp-card-meta"><span>🔥 5.1万热度</span><span>2小时前</span></div>
+      </div>
+      <div class="hp-card">
+        <span class="hp-card-tag">新秀观察</span>
+        <h3>今年新秀中谁最有“虎扑NBA最佳新秀”相？</h3>
+        <p>对比前20场数据与高阶效率，JRs投票结果出人意料，防守型侧翼人气很高。</p>
+        <div class="hp-card-meta"><span>🔥 3.8万热度</span><span>3小时前</span></div>
+      </div>
+      <div class="hp-card">
+        <span class="hp-card-tag">数据面板</span>
+        <h3>本周球员效率榜：中锋占据前四席</h3>
+        <p>约基奇、恩比德、萨博尼斯领跑，虎扑NBA数据区更新了真实命中率排名。</p>
+        <div class="hp-card-meta"><span>🔥 2.9万热度</span><span>4小时前</span></div>
+      </div>
+      <div class="hp-card">
+        <span class="hp-card-tag">经典回顾</span>
+        <h3>五年前今日：那场双加时圣诞大战你还记得吗</h3>
+        <p>JRs在评论区晒出当时的评分截图，虎扑NBA的老帖子又被翻了出来。</p>
+        <div class="hp-card-meta"><span>🔥 2.1万热度</span><span>5小时前</span></div>
+      </div>
+      <div class="hp-card">
+        <span class="hp-card-tag">球迷观点</span>
+        <h3>“现在看球是不是太依赖数据了？”JRs吵起来了</h3>
+        <p>从球员评分到高阶数据，社区里关于看球方式的讨论持续升温。</p>
+        <div class="hp-card-meta"><span>🔥 3.3万热度</span><span>6小时前</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 最新动态 -->
+<section class="hp-section" id="latest">
+  <div class="container">
+    <div class="hp-section-head">
+      <h2><i>｜</i>最新更新 · 热播动态</h2>
+      <a href="/#news" class="hp-more-link">全部更新 ›</a>
+    </div>
+    <div class="hp-update-list">
+      <div class="hp-update-item">
+        <span class="hp-update-time">10:42</span>
+        <div class="hp-update-content"><strong>湖人vs勇士</strong> 赛后评分已更新，共12.3万人参与，詹姆斯获评8.7分。</div>
+        <span class="hp-update-badge">评分更新</span>
+      </div>
+      <div class="hp-update-item">
+        <span class="hp-update-time">10:15</span>
+        <div class="hp-update-content"><strong>虎扑NBA战报</strong> 约基奇拿下赛季第8次三双，掘金主场逆转雷霆。</div>
+        <span class="hp-update-badge">战报</span>
+      </div>
+      <div class="hp-update-item">
+        <span class="hp-update-time">09:50</span>
+        <div class="hp-update-content"><strong>热帖速递</strong> “凯尔特人的防守轮转到底强在哪”登上今日热榜第一。</div>
+        <span class="hp-update-badge">热帖</span>
+      </div>
+      <div class="hp-update-item">
+        <span class="hp-update-time">09:22</span>
+        <div class="hp-update-content"><strong>伤病报告</strong> 某东部球队主力控卫因脚踝酸痛出战成疑，JRs在评论区讨论替补方案。</div>
+        <span class="hp-update-badge">伤病</span>
+      </div>
+      <div class="hp-update-item">
+        <span class="hp-update-time">08:47</span>
+        <div class="hp-update-content"><strong>数据观察</strong> 虎扑NBA数据区更新本周防守效率榜，森林狼继续领跑。</div>
+        <span class="hp-update-badge">数据</span>
+      </div>
+      <div class="hp-update-item">
+        <span class="hp-update-time">08:10</span>
+        <div class="hp-update-content"><strong>专栏更新</strong> 《从挡拆选择看控卫决策》深度解析已发布，附带6个回合图解。</div>
+        <span class="hp-update-badge">专栏</span>
+      </div>
+      <div class="hp-update-item">
+        <span class="hp-update-time">07:35</span>
+        <div class="hp-update-content"><strong>流言板</strong> 多支球队关注某3D侧翼，虎扑NBA交易流言区更新汇总帖。</div>
+        <span class="hp-update-badge">流言</span>
+      </div>
+      <div class="hp-update-item">
+        <span class="hp-update-time">昨日 23:18</span>
+        <div class="hp-update-content"><strong>赛后讨论</strong> 勇士末节五小阵容使用时间创新高，JRs观点分歧明显。</div>
+        <span class="hp-update-badge">讨论</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 分类入口 -->
+<section class="hp-section" id="categories">
+  <div class="container">
+    <div class="hp-section-head">
+      <h2><i>｜</i>分类入口</h2>
+      <a href="/#hot" class="hp-more-link">全部分类 ›</a>
+    </div>
+    <div class="hp-cat-grid">
+      <a href="/#hot" class="hp-cat-item"><span class="hp-cat-icon">战</span> 比赛战报</a>
+      <a href="/#hot" class="hp-cat-item"><span class="hp-cat-icon">评</span> 球员评分</a>
+      <a href="/#depth" class="hp-cat-item"><span class="hp-cat-icon">术</span> 战术解析</a>
+      <a href="/#news" class="hp-cat-item"><span class="hp-cat-icon">流</span> 交易流言</a>
+      <a href="/#hot" class="hp-cat-item"><span class="hp-cat-icon">数</span> 数据排行</a>
+      <a href="/#comments" class="hp-cat-item"><span class="hp-cat-icon">帖</span> JRs热帖</a>
+      <a href="/#latest" class="hp-cat-item"><span class="hp-cat-icon">新</span> 新秀观察</a>
+      <a href="/#news" class="hp-cat-item"><span class="hp-cat-icon">伤</span> 伤病报告</a>
+    </div>
+  </div>
+</section>
+
+<!-- 深度解析 -->
+<section class="hp-section" id="depth">
+  <div class="container">
+    <div class="hp-section-head">
+      <h2><i>｜</i>深度解析</h2>
+      <a href="/#comments" class="hp-more-link">JRs怎么看 ›</a>
+    </div>
+    <div class="hp-article-box">
+      <h3>虎扑NBA为什么让人越刷越上头？</h3>
+      <p>很多人第一次打开虎扑NBA，是为了看一场比赛的比分和数据。但真正让用户留下来的，往往是比赛结束后那几百条带着情绪和观点的评论。虎扑NBA社区的特殊之处在于，它把“看球”这件事从单向接收变成了多声部讨论：你可以在一篇战报下面看到战术党认真画图，也能看到情绪党短评吐槽，还能看到数据党甩出高阶统计。这种混合气质，让同一个比赛日的内容层次变得很丰富。</p>
+      <p>从内容结构上看，虎扑NBA的页面通常围绕“比赛”这个核心单位展开。比赛前有前瞻和伤病报告，比赛中有实时战报和评分入口，比赛后有技术统计、球员评分和热帖讨论。对于想快速了解结果的用户，看比分和评分就够了；对于想深入研究的用户，战术解析和JRs的回合拆解会提供更多信息。这种分层设计，让不同深度的球迷都能找到适合自己的阅读节奏。</p>
+      <p>球员评分是虎扑NBA很有代表性的功能。它不同于传统媒体的专家打分，而是把评价权交给大量普通球迷。评分结果往往能反映球迷对球员场上影响力、关键球表现和比赛态度的综合感受。当然，评分也带有主观性，同一场比赛里争议判罚或关键失误都可能让分数产生波动。但正是这种“不完美”，让评分区本身成为第二个讨论现场，很多人看完比赛的第一件事就是去虎扑NBA看评分和评论。</p>
+      <p>如果你刚开始使用虎扑NBA，建议先从当天重点比赛的战报和评分入手，再顺着热帖标题去了解社区在关注什么。遇到不熟悉的战术术语，可以翻翻深度解析专栏，里面通常有配图或回合拆解。虎扑NBA不是一个只提供答案的地方，它更像一个持续更新的篮球话题场，适合对比赛有表达欲的球迷长期停留。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 体验指南 -->
+<section class="hp-section" id="guide">
+  <div class="container">
+    <div class="hp-section-head">
+      <h2><i>｜</i>浏览体验指南</h2>
+      <a href="/#faq" class="hp-more-link">常见疑问 ›</a>
+    </div>
+    <div class="hp-article-box">
+      <h3>如何更高效地刷虎扑NBA</h3>
+      <p>虎扑NBA的页面结构比较清晰，顶部导航提供了热门推荐、最新战报、深度解析、分类入口、常见问题、JRs评论和资讯流七个主要入口。如果你时间有限，可以直接点击“最新战报”查看当天比赛结果和评分概况；如果你更关心社区观点，可以直奔“JRs评论”板块，那里集中展示了近期活跃的讨论帖。搜索框支持球队名、球员名和热帖关键词检索，适合用来追踪特定话题。</p>
+      <p>移动端浏览体验也做了适配，卡片和列表在手机上会自动调整为一列或两列，方便单手操作。如果你习惯追更，可以把页面加入浏览器收藏夹，虎扑NBA会按比赛日节奏更新内容。页面右侧和底部的相关推荐可以帮你从一篇战报跳到同类讨论，扩展浏览路径。FAQ板块收集了用户常见问题，比如评分怎么算、热帖怎么上、数据来源是什么，适合新用户快速上手。</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="hp-section" id="faq">
+  <div class="container">
+    <div class="hp-section-head">
+      <h2><i>｜</i>常见问题</h2>
+      <a href="/#comments" class="hp-more-link">向JRs提问 ›</a>
+    </div>
+    <div class="hp-faq-list">
+      <div class="hp-faq-item">
+        <div class="hp-faq-q">虎扑NBA的球员评分是怎么来的？</div>
+        <div class="hp-faq-a">球员评分由比赛结束后参与打分的JRs共同决定，每人可以为场上球员给出1到10分的评价。系统汇总后显示平均分和参与人数。评分会随着讨论热度变化，热门比赛参与人数多，分数相对更稳定。虎扑NBA评分区还会展示部分高亮短评，方便你了解打分理由。</div>
+      </div>
+      <div class="hp-faq-item">
+        <div class="hp-faq-q">第一次看虎扑NBA，应该先逛哪个板块？</div>
+        <div class="hp-faq-a">建议先看“最新战报”，快速了解当天比赛结果和关键数据；然后去“热门推荐”看看社区在讨论什么；如果对战术感兴趣，可以点开“深度解析”专栏。这样从结果到观点再到分析，阅读路径比较顺。虎扑NBA的板块之间有关联推荐，顺着点不容易迷路。</div>
+      </div>
+      <div class="hp-faq-item">
+        <div class="hp-faq-q">虎扑NBA的热帖是怎么选出来的？</div>
+        <div class="hp-faq-a">热帖主要根据帖子在社区内的互动量（回复、点亮、浏览）综合排序，同时会参考内容质量和话题时效性。虎扑NBA的热门推荐区会定期更新，比赛日通常以战报和评分为主，休赛期则更多是交易流言和经典回顾。热帖排序不是固定不变的，会随JRs的互动持续变化。</div>
+      </div>
+      <div class="hp-faq-item">
+        <div class="hp-faq-q">页面上的数据面板更新频率如何？</div>
+        <div class="hp-faq-a">虎扑NBA的数据面板在比赛日会随比赛进程更新比分和关键统计，赛后补充高阶数据。非比赛日主要更新球队排名、球员效率榜和伤病报告。数据来源以官方统计和合作数据方为主，社区内也会有JRs搬运和讨论。如果你发现数据有延迟，可以刷新页面或查看数据区的最新说明。</div>
+      </div>
+      <div class="hp-faq-item">
+        <div class="hp-faq-q">如何在虎扑NBA找到特定球队的内容？</div>
+        <div class="hp-faq-a">可以使用顶部搜索框输入球队名称，也可以从“分类入口”进入对应分类。虎扑NBA的标签系统覆盖了球队、球员和话题类型，点击热门标签中的球队名就能看到相关战报、评分和热帖。关注特定球队的JRs还会在评论区提供赛后汇总帖，顺着评论找也是常用方法。</div>
+      </div>
+      <div class="hp-faq-item">
+        <div class="hp-faq-q">虎扑NBA和普通体育新闻站有什么区别？</div>
+        <div class="hp-faq-a">虎扑NBA更强调社区讨论和用户参与。普通体育新闻站以编辑产出为主，虎扑NBA则把JRs的战报补充、评分和热帖讨论放在重要位置。你在这里不仅能看到比赛结果，还能看到大量球迷视角的分析和吐槽。如果你喜欢看球时有人一起聊，虎扑NBA的社区氛围会更对味。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 用户评论 -->
+<section class="hp-section" id="comments">
+  <div class="container">
+    <div class="hp-section-head">
+      <h2><i>｜</i>JRs评论</h2>
+      <a href="/#post" class="hp-more-link">参与讨论 ›</a>
+    </div>
+    <div class="hp-comment-grid">
+      <div class="hp-comment-item">
+        <div class="hp-comment-head"><span class="hp-comment-name">北岸花园的绿</span><span class="hp-comment-date">11月6日</span></div>
+        <div class="hp-comment-text">今天评分区太真实了，最后那个失误直接让分数掉了一档，JRs下手是真狠。</div>
+      </div>
+      <div class="hp-comment-item">
+        <div class="hp-comment-head"><span class="hp-comment-name">湖人总冠军22</span><span class="hp-comment-date">11月6日</span></div>
+        <div class="hp-comment-text">虎扑NBA战报更新挺快，午休刷一下就知道比分了，赛后评论比比赛还精彩。</div>
+      </div>
+      <div class="hp-comment-item">
+        <div class="hp-comment-head"><span class="hp-comment-name">约老师的马</span><span class="hp-comment-date">11月5日</span></div>
+        <div class="hp-comment-text">约基奇9.8分没毛病，但我觉得戈登的防守被低估了，评分才8.1有点低。</div>
+      </div>
+      <div class="hp-comment-item">
+        <div class="hp-comment-head"><span class="hp-comment-name">金州拉文</span><span class="hp-comment-date">11月5日</span></div>
+        <div class="hp-comment-text">热帖里那个战术拆解写得不错，但配图要是能再多两个回合就更好了。</div>
+      </div>
+      <div class="hp-comment-item">
+        <div class="hp-comment-head"><span class="hp-comment-name">纽约不眠夜</span><span class="hp-comment-date">11月4日</span></div>
+        <div class="hp-comment-text">交易流言区天天有惊喜，虽然大部分不靠谱，但JRs分析薪资空间是真专业。</div>
+      </div>
+      <div class="hp-comment-item">
+        <div class="hp-comment-head"><span class="hp-comment-name">只关于篮球</span><span class="hp-comment-date">11月4日</span></div>
+        <div class="hp-comment-text">希望虎扑NBA能多推一些新秀观察的内容，现在除了前五顺位其他了解渠道太少。</div>
+      </div>
+      <div class="hp-comment-item">
+        <div class="hp-comment-head"><span class="hp-comment-name">密尔沃基小鹿</span><span class="hp-comment-date">11月3日</span></div>
+        <div class="hp-comment-text">评分有时候情绪化太严重了，打得好不如名气大，建议增加一个只看数据的筛选。</div>
+      </div>
+      <div class="hp-comment-item">
+        <div class="hp-comment-head"><span class="hp-comment-name">波特兰表哥</span><span class="hp-comment-date">11月3日</span></div>
+        <div class="hp-comment-text">深度解析那篇挡拆文章看了两遍，评论区补充的防守细节比正文还多，收藏了。</div>
+      </div>
+      <div class="hp-comment-item">
+        <div class="hp-comment-head"><span class="hp-comment-name">詹眉连线</span><span class="hp-comment-date">11月2日</span></div>
+        <div class="hp-comment-text">今天湖人勇士的帖子量爆炸，刷了十分钟没刷到底，虎扑NBA热度还是稳。</div>
+      </div>
+      <div class="hp-comment-item">
+        <div class="hp-comment-head"><span class="hp-comment-name">雷霆新势力</span><span class="hp-comment-date">11月2日</span></div>
+        <div class="hp-comment-text">数据面板能加个球队防守效率排名吗？每次还要去别的帖子找，有点麻烦。</div>
+      </div>
+      <div class="hp-comment-item">
+        <div class="hp-comment-head"><span class="hp-comment-name">风城玫瑰粉</span><span class="hp-comment-date">11月1日</span></div>
+        <div class="hp-comment-text">经典回顾那个双加时帖子看泪目了，当年就是在虎扑NBA和一群人刷文字直播。</div>
+      </div>
+      <div class="hp-comment-item">
+        <div class="hp-comment-head"><span class="hp-comment-name">迈阿密热火魂</span><span class="hp-comment-date">10月31日</span></div>
+        <div class="hp-comment-text">热帖质量时好时坏，比赛日还行，休赛期有些帖子有点水，希望多点深度讨论。</div>
+      </div>
+      <div class="hp-comment-item">
+        <div class="hp-comment-head"><span class="hp-comment-name">达拉斯小胖</span><span class="hp-comment-date">10月30日</span></div>
+        <div class="hp-comment-text">球员评分入口要是能再显眼点就好了，有时候找半天，不过用习惯了也还行。</div>
+      </div>
+      <div class="hp-comment-item">
+        <div class="hp-comment-head"><span class="hp-comment-name">圣城老石匠</span><span class="hp-comment-date">10月29日</span></div>
+        <div class="hp-comment-text">虎扑NBA的资讯流里偶尔会混进一些旧闻，希望能加个时间筛选，方便追新。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 资讯 -->
+<section class="hp-section" id="news">
+  <div class="container">
+    <div class="hp-section-head">
+      <h2><i>｜</i>相关资讯</h2>
+      <a href="/#latest" class="hp-more-link">更多资讯 ›</a>
+    </div>
+    <div class="hp-news-grid">
+      <div class="hp-news-card">
+        <div class="hp-news-date">2026年11月7日</div>
+        <h4>虎扑NBA战报更新：多场焦点战今日打响</h4>
+        <p>东西部强队集中出战，JRs在评分区提前预热，赛后讨论帖预计将集中爆发。</p>
+      </div>
+      <div class="hp-news-card">
+        <div class="hp-news-date">2026年11月6日</div>
+        <h4>球员评分区新增“关键球表现”标签</h4>
+        <p>虎扑NBA评分系统小范围更新，部分比赛开始展示关键时段数据，方便JRs打分参考。</p>
+      </div>
+      <div class="hp-news-card">
+        <div class="hp-news-date">2026年11月5日</div>
+        <h4>深度专栏：从空间角度看现代挡拆</h4>
+        <p>新一期战术解析上线，用六个回合拆解挡拆后的防守选择，评论区讨论热烈。</p>
+      </div>
+      <div class="hp-news-card">
+        <div class="hp-news-date">2026年11月4日</div>
+        <h4>热帖盘点：JRs本周最关注的五个话题</h4>
+        <p>从新秀表现到交易流言，虎扑NBA社区一周热门讨论汇总，评分争议位列其中。</p>
+      </div>
+      <div class="hp-news-card">
+        <div class="hp-news-date">2026年11月3日</div>
+        <h4>数据观察：中锋助攻率创近年新高</h4>
+        <p>虎扑NBA数据区整理开季至今的助攻分布，约基奇和萨博尼斯领跑内线传球榜。</p>
+      </div>
+      <div class="hp-news-card">
+        <div class="hp-news-date">2026年11月2日</div>
+        <h4>社区公告：热帖排序规则优化说明</h4>
+        <p>虎扑NBA调整热帖排序权重，增加内容质量因子，减少纯标题党帖子的曝光。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 订阅引导 -->
+<section class="hp-section" id="subscribe">
+  <div class="container">
+    <div class="hp-article-box" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; background:linear-gradient(135deg,#1a1e24,#2d333b); color:#fff; border:none;">
+      <div>
+        <h3 style="color:#fff; border-bottom-color:var(--hupu-red); margin-bottom:6px;">订阅虎扑NBA每日战报</h3>
+        <p style="color:#9ca3af; margin-bottom:0;">比赛日邮件提醒，不错过任何一场焦点战和JRs热帖。</p>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <input type="email" placeholder="你的邮箱" style="padding:12px 18px; border-radius:30px; border:none; min-width:220px; font-size:14px; outline:none;">
+        <button style="background:var(--hupu-red); color:#fff; border:none; padding:12px 26px; border-radius:30px; font-weight:700; cursor:pointer; font-size:14px;">订阅</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 页脚 -->
+<footer class="hp-footer">
+  <div class="container">
+    <div class="hp-footer-inner">
+      <div class="hp-footer-brand">
+        <div class="hp-logo">
+          <span class="hp-logo-icon">JR</span>
+          <span style="color:#fff;">虎扑<span style="color:#c8102e;">NBA</span></span>
+        </div>
+        <p>篮球迷的社区资讯站，提供比赛战报、球员评分、JRs热帖和深度解析。页面内容为模拟示例，用于展示站点结构。</p>
+      </div>
+      <div class="hp-footer-links">
+        <div>
+          <strong>内容</strong>
+          <a href="/#hot">热门推荐</a>
+          <a href="/#latest">最新战报</a>
+          <a href="/#depth">深度解析</a>
+          <a href="/#comments">JRs评论</a>
+        </div>
+        <div>
+          <strong>社区</strong>
+          <a href="/#categories">分类入口</a>
+          <a href="/#faq">常见问题</a>
+          <a href="/#news">资讯流</a>
+          <a href="/#subscribe">订阅</a>
+        </div>
+        <div>
+          <strong>友情链接</strong>
+          <a href="#">篮球数据站</a>
+          <a href="#">球迷论坛</a>
+          <a href="#">体育资讯</a>
+          <a href="#">战报聚合</a>
+        </div>
+      </div>
+    </div>
+    <div class="hp-footer-bottom">
+      <span>© 2026 虎扑NBA · 内容示例页 · 非官方站点</span>
+      <span>免责声明：本页为静态演示页面，数据与评论均为模拟内容，不构成任何实际资讯。</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+  </html>
